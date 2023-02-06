@@ -121,7 +121,7 @@ namespace Practice1
                 "\t6 – char\n" +
                 "\t7 - string\n" +
                 "\t8 – Vector\n" +
-                "\t9 – Matrix\n" +
+                "\t9 – Matrix3x2\n" +
                 "\t0 – Выход в главное меню");
 
             Type t = null;
