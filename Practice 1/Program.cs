@@ -1,5 +1,4 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Reflection;
 
 namespace Practice1
@@ -39,10 +38,14 @@ namespace Practice1
         {
             //Ратников Владимир 3530903/00002 8 Вариант
 
-            ShowMenuText();
-
             while (true)
             {
+                Console.Clear(); //очистка консоли
+                Console.WriteLine("Информация по типам:\n" +
+                    "1 – Общая информация по типам\n" +
+                    "2 – Выбрать тип из списка\n" +
+                    "3 – Параметры консоли\n" +
+                    "0 - Выход из программы");
                 switch (char.ToLower(Console.ReadKey(true).KeyChar))
                 {
                     case '1': ShowAllTypeInfo(); break;
@@ -52,17 +55,6 @@ namespace Practice1
                     default: break;
                 }
             }
-        }
-
-        //Меню
-        public static void ShowMenuText()
-        {
-            Console.Clear(); //очистка консоли
-            Console.WriteLine("Информация по типам:\n" +
-                "1 – Общая информация по типам\n" +
-                "2 – Выбрать тип из списка\n" +
-                "3 – Параметры консоли\n" +
-                "0 - Выход из программы");
         }
 
         //1 – общая информация по типам
@@ -128,7 +120,6 @@ namespace Practice1
 
             Console.WriteLine("\nНажмите любую кнопку для выхода в главное меню");
             Console.ReadKey(true);
-            ShowMenuText();
         }
 
         //2 - выбрать тип из списка
@@ -150,28 +141,22 @@ namespace Practice1
                 "\t9 – Matrix\n" +
                 "\t0 – Выход в главное меню");
 
-            Type t = null;
-
-            bool flag = true;
-
-            while (flag)
+            while (true)
             {
-                flag = false;
                 switch (char.ToLower(Console.ReadKey(true).KeyChar))
                 {
-                    case '1': t = typeof(uint); break;
-                    case '2': t = typeof(int); break;
-                    case '3': t = typeof(long); break;
-                    case '4': t = typeof(float); break;
-                    case '5': t = typeof(double); break;
-                    case '6':  t = typeof(char); break;
-                    case '7': t = typeof(string); break;
-                    case '8': t = typeof(Vector); break;
-                    case '9': t = typeof(Array); break;
-                    case '0': ShowMenuText(); break;
-                    default: flag = true; break;
+                    case '1': ShowTypeInfo(typeof(uint)); return;
+                    case '2': ShowTypeInfo(typeof(int)); return;
+                    case '3': ShowTypeInfo(typeof(long)); return;
+                    case '4': ShowTypeInfo(typeof(float)); return;
+                    case '5': ShowTypeInfo(typeof(double)); return;
+                    case '6': ShowTypeInfo(typeof(char)); return;
+                    case '7': ShowTypeInfo(typeof(string)); return;
+                    case '8': ShowTypeInfo(typeof(Vector)); return;
+                    case '9': ShowTypeInfo(typeof(Array)); return;
+                    case '0': return; 
+                    default: break;
                 }
-                if(flag == false && t != null) ShowTypeInfo(t);
             }
         }
 
@@ -207,16 +192,13 @@ namespace Practice1
                 "Нажмите ‘M’ для вывода дополнительной информации по методам:\n" +
                 "Нажмите ‘0’ для выхода в главное меню\n");
 
-            bool flag = true;
-
-            while (flag)
+            while (true)
             {
-                flag = false;
                 switch (char.ToLower(Console.ReadKey(true).KeyChar))
                 {
                     case 'm': ShowAdditionalTypeInfo(t); break;
-                    case '0': ShowMenuText(); break;
-                    default: flag = true; break;
+                    case '0': return;
+                    default: break;
                 }
             }
         }
@@ -250,9 +232,7 @@ namespace Practice1
                     (mi.MinParams == mi.MaxParams ? mi.MaxParams : (mi.MinParams + ".." + mi.MaxParams)));
             }
 
-            Console.WriteLine("\nНажмите любую кнопку для выхода в главное меню");
-            Console.ReadKey(true);
-            ShowMenuText();
+            Console.WriteLine("\nНажмите ‘0’ для выхода в главное меню");
         }
 
         //3 - параметры консоли
@@ -265,58 +245,53 @@ namespace Practice1
                 "\t2 – Цвет текста\n" +
                 "\t0 - Выход в главное меню");
 
-            bool flag = true;
-
-            while (flag)
+            while (true)
             {
-                flag = false;
                 switch (char.ToLower(Console.ReadKey(true).KeyChar))
                 {
-                    case '1': Console.BackgroundColor = ChooseColor(); break;
-                    case '2': Console.ForegroundColor = ChooseColor(); break;
-                    case '0': break;
-                    default: flag = true; break;
+                    case '1': ChooseColor("background"); return;
+                    case '2': ChooseColor("foreground"); return;
+                    case '0': return;
+                    default: break;
                 }
             }
-
-            ShowMenuText();
         }
 
         //Выбор цвета
-        public static ConsoleColor ChooseColor()
+        public static void ChooseColor(string type)
         {
             Console.Clear(); //очистка консоли
 
             Console.WriteLine("Информация по цветам\n" +
                 "Выберите цвет:\n" +
-                "----------------------------------------\n" +
-                "\t1 – Красный\n" +
-                "\t2 – Зеленый\n" +
-                "\t3 – Черный\n" +
-                "\t4 – Синий\n" +
-                "\t5 – Белый\n" +
-                "\t6 – Серый");
+                "----------------------------------------");
 
-            ConsoleColor consoleColor = ConsoleColor.Black;
-
-            bool flag = true;
-
-            while (flag)
+            string[] colors = typeof(ConsoleColor).GetEnumNames(); //Получаем название всех цветов
+            for (int i = 0; i < colors.Length; i++)
             {
-                flag = false;
-                switch (char.ToLower(Console.ReadKey(true).KeyChar))
-                {
-                    case '1': consoleColor = ConsoleColor.Red; break;
-                    case '2': consoleColor = ConsoleColor.Green; break;
-                    case '3': consoleColor = ConsoleColor.Black; break;
-                    case '4': consoleColor = ConsoleColor.Blue; break;
-                    case '5': consoleColor = ConsoleColor.White; break;
-                    case '6': consoleColor = ConsoleColor.Gray; break;
-                    default: flag = true; break;
-                }
+                Console.WriteLine($"\t{(char)(i + 'a')} - {colors[i]}"); //сначала 'a' в int, затем int к char
             }
 
-            return consoleColor;
+            Console.WriteLine("\t0 - Выход в главное меню");
+
+            while (true)
+            {
+                char option = char.ToLower(Console.ReadKey(true).KeyChar);
+                
+                // 0 - символ возврата
+                if (option == '0') return;
+
+                // введеный символ должен быть между 'a' и 'a' + color.Length
+                int colorIndex = option - 'a';
+                if (colorIndex >= 0 && colorIndex < colors.Length)
+                {
+                    switch (type)
+                    {
+                        case "background": Console.BackgroundColor = (ConsoleColor)colorIndex; return;
+                        case "foreground": Console.ForegroundColor = (ConsoleColor)colorIndex; return;
+                    }
+                }
+            }
         }
     }
 }
