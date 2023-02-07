@@ -6,15 +6,30 @@ namespace Practice1
 {
     public struct MethodInfo
     {
-        public int overloads;
-        public int minParams;
-        public int maxParams;
+        private int _overloads;
+        private int _minParams;
+        private int _maxParams;
 
         public MethodInfo(int overloads, int minParams, int maxParams)
         {
-            this.overloads = overloads;
-            this.minParams = minParams;
-            this.maxParams = maxParams;
+            _overloads = overloads;
+            _minParams = minParams;
+            _maxParams = maxParams;
+        }
+        public int Overloads
+        {
+            get { return _overloads; }
+            set { _overloads = value; }
+        }
+        public int MinParams
+        {
+            get { return _minParams; }
+            set { _minParams = value; }
+        }
+        public int MaxParams
+        {
+            get { return _maxParams; }
+            set { _maxParams = value; }
         }
     }
 
@@ -33,7 +48,7 @@ namespace Practice1
                     case '1': ShowAllTypeInfo(); break;
                     case '2': SelectType(); break;
                     case '3': ChangeConsoleView(); break;
-                    case '0': Environment.Exit(0); break;
+                    case '0': return; 
                     default: break;
                 }
             }
@@ -60,8 +75,10 @@ namespace Practice1
             List<Type> types = new(); //список типов, определенных во всех подключенных сборках
             foreach (Assembly asm in refAssemblies) types.AddRange(asm.GetTypes());
 
-            byte nRefTypes = 0; //кол-во ссылочных типов
-            byte nValueTypes = 0; //кол-во значимых типов
+            int nRefTypes = 0; //кол-во ссылочных типов
+            int nValueTypes = 0; //кол-во значимых типов
+
+
 
             //Доп.вывод для варианта 8
             Type maxConsArgs = null; //Тип, у которого конструктор имеет наибольшее число аргументов
@@ -74,8 +91,17 @@ namespace Practice1
                     nRefTypes++;
                 else if (t.IsValueType)
                     nValueTypes++;
-                
-                if(t.GetConstructors().Length > maxArgs) maxConsArgs = t; //Тип, у которого конструктор имеет наибольшее число аргументов
+
+                ConstructorInfo[] typeConstructors = t.GetConstructors(); //все конструкторы типа
+
+                foreach (var constructor in typeConstructors)
+                {
+                    if (constructor.GetParameters().Length > maxArgs) //Тип, у которого конструктор имеет наибольшее число аргументов
+                    {
+                        maxArgs = constructor.GetParameters().Length;
+                        maxConsArgs = t;
+                    }
+                }
 
                 var interfaces = t.GetInterfaces(); //список интерфейсов типа
                 foreach (var i in interfaces) {
@@ -121,7 +147,7 @@ namespace Practice1
                 "\t6 – char\n" +
                 "\t7 - string\n" +
                 "\t8 – Vector\n" +
-                "\t9 – Matrix3x2\n" +
+                "\t9 – Matrix\n" +
                 "\t0 – Выход в главное меню");
 
             Type t = null;
@@ -141,7 +167,7 @@ namespace Practice1
                     case '6':  t = typeof(char); break;
                     case '7': t = typeof(string); break;
                     case '8': t = typeof(Vector); break;
-                    case '9': t = typeof(Matrix3x2); break;
+                    case '9': t = typeof(Array); break;
                     case '0': ShowMenuText(); break;
                     default: flag = true; break;
                 }
@@ -199,14 +225,15 @@ namespace Practice1
         public static void ShowAdditionalTypeInfo(Type t)
         {
             var methodsInfo = new Dictionary<string, MethodInfo>();
-            foreach (var m in t.GetMethods())
+            
+            foreach(var m in t.GetMethods())
             {
                 if (methodsInfo.ContainsKey(m.Name))  // в словаре уже есть такое имя, обновляем статистику
                 {
                     MethodInfo mi = methodsInfo[m.Name];
-                    mi.overloads++;
-                    if (m.GetParameters().Length > mi.maxParams) mi.maxParams = m.GetParameters().Length;
-                    else if (m.GetParameters().Length < mi.minParams) mi.minParams = m.GetParameters().Length;
+                    mi.Overloads++;
+                    if (m.GetParameters().Length > mi.MaxParams) mi.MaxParams = m.GetParameters().Length;
+                    else if (m.GetParameters().Length < mi.MinParams) mi.MinParams = m.GetParameters().Length;
                     methodsInfo[m.Name] = mi;
                 }
                 else // в словаре нет такого имени, добавляем элемент
@@ -215,11 +242,12 @@ namespace Practice1
 
             Console.WriteLine($"Методы типа {t.FullName}\n" +
                 "Название".PadRight(25, ' ') + "Число перегрузок".PadRight(25, ' ') + "Число параметров");
+
             foreach (var methodInfo in methodsInfo)
             {
                 MethodInfo mi = methodInfo.Value;
-                Console.WriteLine(methodInfo.Key.ToString().PadRight(25, ' ') + mi.overloads.ToString().PadRight(25, ' ') +
-                    (mi.minParams == mi.maxParams ? mi.maxParams : (mi.minParams + ".." + mi.maxParams)));
+                Console.WriteLine("{0, -25}{1, -25}{2}", methodInfo.Key, mi.Overloads, 
+                    (mi.MinParams == mi.MaxParams ? mi.MaxParams : (mi.MinParams + ".." + mi.MaxParams)));
             }
 
             Console.WriteLine("\nНажмите любую кнопку для выхода в главное меню");
@@ -246,12 +274,12 @@ namespace Practice1
                 {
                     case '1': Console.BackgroundColor = ChooseColor(); break;
                     case '2': Console.ForegroundColor = ChooseColor(); break;
-                    case '0': ShowMenuText(); break;
+                    case '0': break;
                     default: flag = true; break;
                 }
             }
 
-            if(flag == false) ShowMenuText();
+            ShowMenuText();
         }
 
         //Выбор цвета
