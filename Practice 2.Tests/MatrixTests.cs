@@ -240,9 +240,9 @@ namespace Practice_2.Tests
             string matrixStr2 = "1 1 1 1 1; 1 1 1/ 1 1, 1 1 1 1 1";
             Matrix matrixByStr1;
 
-            //“ест создани€ матрицы по строчке(3 вариант)
+            //“ест создани€ матрицы по строчке(3 вариант) - требуемый формат: 1 1 1 1 1, 1 1 1 1 1, 1 1 1 1 1
             Assert.IsTrue(Matrix.TryParse(matrixStr1, out matrixByStr1));
-            Assert.Throws<Exception>(() => Matrix.TryParse(matrixStr2, out matrixByStr1));
+            Assert.Throws<FormatException>(() => Matrix.TryParse(matrixStr2, out matrixByStr1));
         }
     }
 }

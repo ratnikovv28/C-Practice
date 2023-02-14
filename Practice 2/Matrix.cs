@@ -172,40 +172,32 @@ namespace Practice_2
         }
         public static bool TryParse(string s, out Matrix m) //Создание матрицы по строчке
         {
-            char[] separators = new char[] { ',', ' ' };
-            string[] subs = s.Split(separators[0], StringSplitOptions.RemoveEmptyEntries);
-            string[] subs2 = new string[] { "" };
-            double[,] subs1 = new double[subs.Length,
-                subs[0].Split(separators[1], StringSplitOptions.RemoveEmptyEntries).Length];
-            int len = subs[0].Split(separators[1], StringSplitOptions.RemoveEmptyEntries).Length;
-            m = new Matrix(1, 1);
+            string[] separators = new string[] { ", ", " " };
+            string[] rows = s.Split(separators[0]);
+            double[,] matrixValues = new double[rows.Length, rows[0].Split(separators[1]).Length];
+            int prevLength = rows[0].Split(separators[1]).Length;
+
             try
             {
-                for (int i = 0; i < subs.Length; i++)
+                for (int i = 0; i < rows.Length; i++)
                 {
-                    subs2 = subs[i].Split(separators[1], StringSplitOptions.RemoveEmptyEntries);
-                    if (len != subs2.Length)
+                    string[] rowsElements = rows[i].Split(separators[1]);
+                    if (i > 0 && prevLength != rowsElements.Length)
                     {
-                        m = new Matrix(1, 1);
-                        throw new Exception("Неверный формат ввода");
+                        throw new FormatException("Неверный формат данных");
                         return false;
                     }
-
-                    if (subs2 != null)
+                    for (int j = 0; j < rowsElements.Length; j++)
                     {
-                        for (int j = 0; j < subs2.Length; j++)
-                        {
-                            subs1[i, j] = Convert.ToDouble(subs2[j]);
-                        }
+                        double.TryParse(rowsElements[j], out matrixValues[i, j]);
                     }
                 }
-
-                m = new Matrix(subs1);
+                m = new Matrix(matrixValues);
             }
             catch (Exception)
             {
-                throw new Exception("Неверный формат ввода");
-                m = new Matrix(1, 1);
+                throw new FormatException("Неверный формат данных");
+                return false;
             }
 
             return true;
