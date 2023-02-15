@@ -99,7 +99,6 @@ namespace Practice_2
 
         //Функции
         public static Matrix operator *(Matrix m1, double d) => MultN(m1, d); //Переопределение умножение матрицы на число
-        public static Matrix operator *(Matrix m1, Matrix m2) => MultTwoMatrix(m1, m2); //Переопределение умножение матрицы на число
         private static Matrix MultN(Matrix m1, double d)
         {
             Matrix arr = new Matrix(m1.Rows, m1.Cols);
@@ -114,10 +113,14 @@ namespace Practice_2
             return arr;
         }
 
+        //Дополнительная задача - перемножение матриц
+        public static Matrix operator *(Matrix m1, Matrix m2) => MultTwoMatrix(m1, m2); //Переопределение умножение матрицы на число
         private static Matrix MultTwoMatrix(Matrix m1, Matrix m2)
         {
             try
             {
+                //Операция умножения двух матриц выполнима только в том случае,
+                //если число столбцов в первом сомножителе равно числу строк во втором
                 if (m1.Cols != m2.Rows) throw new Exception("Ошибка");
                 int newRows = m1.Rows;
                 int newCols = m2.Cols;
@@ -140,7 +143,7 @@ namespace Practice_2
             }
             catch (Exception)
             {
-                throw new Exception("Число столбцов одной матрицы не равно числу строк другой матрицы");
+                throw new Exception("Число столбцов матрицы1 не равно числу строк матрицы2");
             }
         }
 
