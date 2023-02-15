@@ -6,36 +6,18 @@ namespace Practice2
     {
         static void Main(string[] args)
         {
-            string matrixStr1 = "1 1 1 1 1, 1 1 1 1 1, 1 1 1 1 1";
+            double[,] dataMult3 = new double[2, 1] {
+            { 33.9 },
+            { 71.875 } };
+            var mat1 = new Matrix(dataMult3);
 
-            string[] separators = new string[] { ", ", " " };
-            string[] rows = matrixStr1.Split(separators[0]);
-            double[,] matrixValues = new double[rows.Length, rows[0].Split(separators[1]).Length];
-            Matrix m;
-            int prevLength = rows[0].Split(separators[1]).Length;
+            double[,] dataMult4 = new double[1, 3] {
+            { 3, 3, 3 } };
+            var mat2 = new Matrix(dataMult4);
 
-            try
-            {
-                for (int i = 0; i < rows.Length; i++)
-                {
-                    string[] rowsElements = rows[i].Split(separators[1]);
-                    if (i > 0 && prevLength != rowsElements.Length)
-                    {
-                        throw new FormatException("Неверный формат данных");
-                    }
-                    for (int j = 0; j < rowsElements.Length; j++)
-                    {
-                        double.TryParse(rowsElements[j], out matrixValues[i, j]);
-                    }
-                }
-                m = new Matrix(matrixValues);
-            }
-            catch (Exception)
-            {
-                throw new FormatException("Неверный формат данных");
-            }
+            var mat3 = mat1 * mat2;
 
-            string das = "das";
+            string ss = "sa";
         }
     }
 }

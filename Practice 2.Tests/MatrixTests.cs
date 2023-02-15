@@ -17,8 +17,8 @@ namespace Practice_2.Tests
         [SetUp]
         public void Setup()
         {
-            certainMatrix = new Matrix(3, 5);
-            squareMatrix = new Matrix(8, 8);
+            certainMatrix = new Matrix(1, 3);
+            squareMatrix = new Matrix(2, 8);
 
             double[,] certainRectangleArray = { { 1.1, 2, 3.4 },
                                                 { 4, 5.75, 6 } };
@@ -34,9 +34,11 @@ namespace Practice_2.Tests
                                               { 0, 0, 1 } };
             unityMatrixByRectangleArray = new Matrix(unityRectangleArray);
 
-            double[,] diagonalRectangleArray = { { 1.312, 0, 0 },
-                                                 { 0, 5.312, 0 },
-                                                 { 0, 0, 9.787 } };
+            double[,] diagonalRectangleArray = { { 1.312, 0, 0, 0, 0 },
+                                                 { 0, 5.312, 0, 0, 0  },
+                                                 { 0, 0, 9.787, 0, 0  },
+                                                { 0, 0, 0, 1, 0  },
+                                                { 0, 0, 0, 0, 1  },};
             diagonalMatrixByRectangleArray = new Matrix(diagonalRectangleArray);
 
             double[,] emptyRectangleArray = { { 0, 0, 0 },
@@ -167,6 +169,40 @@ namespace Practice_2.Tests
             //Тест матричной операции умножнения на число в соотвествии с вариантом 3
             Assert.AreEqual(dataMult1, (certainMatrix * 3).Data);
             Assert.AreNotEqual(dataMult2, (certainMatrix * 3).Data);
+        }
+
+        [Test]
+        public void Test_Multiplication_Matrix_On_Matrix()
+        {
+            double[][] dataMult1 = new double[2][];
+            dataMult1[0] = new double[] { 33.9, 42.732, 46.12 };
+            dataMult1[1] = new double[] { 71.875, 90.63, 101.3 };
+
+            double[][] dataMult2 = new double[3][];
+            dataMult2[0] = new double[] { 3, 3, 3, 2, 3 };
+            dataMult2[1] = new double[] { 3, 3, 3, 3, 3 };
+            dataMult2[2] = new double[] { 2, 3, 3, 3, 3 };
+
+            double[,] dataMult3 = new double[2, 1] {
+            { 34 },
+            { 71.875 } };
+            var mat1 = new Matrix(dataMult3);
+
+            double[,] dataMult4 = new double[1, 3] {
+            { 3, 3, 3 } };
+            var mat2 = new Matrix(dataMult4);
+
+            double[][] dataMult5 = new double[2][];
+            dataMult5[0] = new double[] { 102, 102, 102 };
+            dataMult5[1] = new double[] { 215.625, 215.625, 215.625 };
+
+            Matrix m;
+
+            //Тест матричной операции умножнения на число в соотвествии с вариантом 3
+            Assert.AreEqual(dataMult1, (certainMatrixByRectangleArray * squareMatrixByRectangleArray).Data);
+            Assert.AreEqual(dataMult5, (mat1 * mat2).Data);
+            Assert.Throws<Exception>(() => m = squareMatrixByRectangleArray * certainMatrixByRectangleArray);
+            Assert.Throws<Exception>(() => m = certainMatrixByRectangleArray * diagonalMatrixByRectangleArray);
         }
 
         [Test]

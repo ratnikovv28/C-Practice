@@ -99,6 +99,7 @@ namespace Practice_2
 
         //Функции
         public static Matrix operator *(Matrix m1, double d) => MultN(m1, d); //Переопределение умножение матрицы на число
+        public static Matrix operator *(Matrix m1, Matrix m2) => MultTwoMatrix(m1, m2); //Переопределение умножение матрицы на число
         private static Matrix MultN(Matrix m1, double d)
         {
             Matrix arr = new Matrix(m1.Rows, m1.Cols);
@@ -112,6 +113,37 @@ namespace Practice_2
 
             return arr;
         }
+
+        private static Matrix MultTwoMatrix(Matrix m1, Matrix m2)
+        {
+            try
+            {
+                if (m1.Cols != m2.Rows) throw new Exception("Ошибка");
+                int newRows = m1.Rows;
+                int newCols = m2.Cols;
+
+                double[,] newArr = new double[newRows, newCols];
+                for (int i = 0; i < m1.Rows; i++)
+                {
+                    for (int j = 0; j < m2.Cols; j++)
+                    {
+                        for (int k = 0; k < m2.Rows; k++)
+                        {
+                            newArr[i, j] += m1.Data[i][k] * m2.Data[k][j];
+                        }
+                    }
+                }
+
+                var newMatrix = new Matrix(newArr);
+
+                return newMatrix;
+            }
+            catch (Exception)
+            {
+                throw new Exception("Число столбцов одной матрицы не равно числу строк другой матрицы");
+            }
+        }
+
         public static explicit operator Matrix(double[,] arr) => new Matrix(arr); //Оператор преобразования типов 
         public Matrix Transpose() //Транспонирование матрицы
         {
