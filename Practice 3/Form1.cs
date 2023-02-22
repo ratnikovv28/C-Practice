@@ -8,14 +8,18 @@ public partial class Form1 : Form
 
     public List<Point> arPoints = new List<Point>(); //Список поставленных точек
     public List<Point> arOffsets = new List<Point>(); //Список 'смещенных' точек, используемые при передвижение
+    public Dictionary<List<Point>, LineType> figures = new Dictionary<List<Point>, LineType>();
     public bool pointsFlag = true; //Флаг рисования точки 
     public bool dragFlag = false; //Флаг перемещения точки
     public bool moveFlag = false; //Флаг движения точек
+    public bool saveFlag = false; //Флаг после сохранения фигуры
     public int iPointToDrag; // индекс перемещаемой точки
 
     public LineType LineTypeToShow; // линия соединения точек
     public int LineWidth { get; set; } = 5;       // толщина линии
     public enum LineType { None, Curve, Bezier, Polygone, FilledCurve }; // все виды линий
+
+    public int pictureBoxWidth { get; set; }
 
     public Size PointSize { get; set; } = new Size(5, 5);
     public float PointRadius { get; set; } = 5;
@@ -35,6 +39,8 @@ public partial class Form1 : Form
         KeyPreview = true;
         KeyDown += new KeyEventHandler(Form1_KeyDown);
 
+        pictureBoxWidth = pictureBox1.Width;
+
         moveTimer.Interval = 5;
         moveTimer.Tick += new EventHandler(TimerTickHandler);
 
@@ -46,6 +52,7 @@ public partial class Form1 : Form
         button6.Click += new EventHandler(buttonPolygone_Click);
         button7.Click += new EventHandler(buttonBeziers_Click);
         button8.Click += new EventHandler(buttonFilledCurve_Click);
+        button9.Click += new EventHandler(buttonSave_Click);
 
         //В начале блокируем некоторые кнопки
         button3.Enabled = false;
@@ -62,9 +69,14 @@ public partial class Form1 : Form
         Graphics g = e.Graphics;
         if (arPoints.Count > 0)
         {
-            ShowPoints(g);
+            ShowPoints(g, null);
             if (LineTypeToShow != LineType.None)
-                ShowLine(g, LineTypeToShow);
+                ShowLine(g, LineTypeToShow, null);
+            foreach (var figure in figures)
+            {
+                ShowPoints(g, figure.Key);
+                ShowLine(g, figure.Value, figure.Key);
+            }
         }
 
     }
@@ -73,7 +85,7 @@ public partial class Form1 : Form
     void Form1_MouseClick(object sender, MouseEventArgs e)
     {
         Point p;
-        if (e.X > 200 && !dragFlag)
+        if (e.X > pictureBoxWidth && !dragFlag)
         {
             p = e.Location;
             if (pointsFlag)
@@ -202,33 +214,64 @@ public partial class Form1 : Form
     }
 
     //Отрисовка точек
-    private void ShowPoints(Graphics g)
+    private void ShowPoints(Graphics g, List<Point>? figure)
     {
-        foreach (var p in arPoints)
-            g.FillEllipse(new SolidBrush(PointColor), p.X, p.Y, PointSize.Width, PointSize.Height);
+        if (figure == null)
+        {
+            foreach (var p in arPoints)
+                g.FillEllipse(new SolidBrush(PointColor), p.X, p.Y, PointSize.Width, PointSize.Height);
+        }
+        else
+        {
+            foreach (var p in figure)
+                g.FillEllipse(new SolidBrush(PointColor), p.X, p.Y, PointSize.Width, PointSize.Height);
+        }
     }
 
     //Отрисовка линий
-    void ShowLine(Graphics g, LineType line)
+    void ShowLine(Graphics g, LineType line, List<Point>? figure)
     {
         SolidBrush brush = new SolidBrush(LineColor);
         Pen pen = new Pen(brush, LineWidth);
-        switch (line)
+        if (figure == null)
         {
-            case LineType.Bezier:
-                g.DrawBeziers(pen, arPoints.ToArray());
-                break;
-            case LineType.Curve:
-                g.DrawClosedCurve(pen, arPoints.ToArray());
-                break;
-            case LineType.FilledCurve:
-                g.FillClosedCurve(brush, arPoints.ToArray());
-                break;
-            case LineType.Polygone:
-                g.DrawPolygon(pen, arPoints.ToArray());
-                break;
-            default:
-                break;
+            switch (line)
+            {
+                case LineType.Bezier:
+                    g.DrawBeziers(pen, arPoints.ToArray());
+                    break;
+                case LineType.Curve:
+                    g.DrawClosedCurve(pen, arPoints.ToArray());
+                    break;
+                case LineType.FilledCurve:
+                    g.FillClosedCurve(brush, arPoints.ToArray());
+                    break;
+                case LineType.Polygone:
+                    g.DrawPolygon(pen, arPoints.ToArray());
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            switch (line)
+            {
+                case LineType.Bezier:
+                    g.DrawBeziers(pen, figure.ToArray());
+                    break;
+                case LineType.Curve:
+                    g.DrawClosedCurve(pen, figure.ToArray());
+                    break;
+                case LineType.FilledCurve:
+                    g.FillClosedCurve(brush, figure.ToArray());
+                    break;
+                case LineType.Polygone:
+                    g.DrawPolygon(pen, figure.ToArray());
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -238,7 +281,11 @@ public partial class Form1 : Form
         pointsFlag = !pointsFlag; //включение или отключение режима добавления точек по щелчку мыши
         dragFlag = false;
         moveFlag = false;
-        Refresh();
+        if(!saveFlag)
+        {
+            saveFlag = !saveFlag;
+            Refresh();
+        } 
     }
 
     //Кнопка "Параметры"
@@ -308,7 +355,7 @@ public partial class Form1 : Form
                 {
                     for (int i = 0; i < arPoints.Count; i++)
                     {
-                        if (arPoints.Min(a => a.X) == 200)
+                        if (arPoints.Min(a => a.X) == pictureBoxWidth)
                             break;
                         arPoints[i] = new Point(arPoints[i].X - 1, arPoints[i].Y);
                     }
@@ -351,7 +398,7 @@ public partial class Form1 : Form
             _x = arPoints[i].X + arOffsets[i].X;
 
             //Проверка на то, чтобы точки не вылетали за пределы поля по горизонтали
-            if (_x >= this.ClientRectangle.Width || _x <= 200)
+            if (_x >= this.ClientRectangle.Width || _x <= pictureBoxWidth)
             {
                 arOffsets[i] = new Point(-arOffsets[i].X, arOffsets[i].Y);
                 _x = arPoints[i].X + arOffsets[i].X;
@@ -378,6 +425,7 @@ public partial class Form1 : Form
         moveFlag = false;
         arPoints.Clear();
         arOffsets.Clear();
+        figures.Clear();
         PointColor = Color.Blue;
         LineColor = Color.Blue;
         LineWidth = 5;
@@ -434,7 +482,12 @@ public partial class Form1 : Form
     //Кнопка "Сохранение"
     void buttonSave_Click(object sender, EventArgs e)
     {
-        arPoints = new List<Point>();
-        Refresh();
+        figures.Add(new List<Point>(arPoints), LineTypeToShow);
+
+        if (pointsFlag)
+            button1.PerformClick();
+        arPoints.Clear();
+
+        saveFlag = true;
     }
 }
