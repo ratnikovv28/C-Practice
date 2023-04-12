@@ -8,7 +8,7 @@ public partial class Form1 : Form
 
     public List<Point> arPoints = new List<Point>(); //Список поставленных точек
     public List<Point> arOffsets = new List<Point>(); //Список 'смещенных' точек, используемые при передвижение
-    public Dictionary<List<Point>, LineType> figures = new Dictionary<List<Point>, LineType>();
+    public Dictionary<List<Point>, LineType> figures = new Dictionary<List<Point>, LineType>(); //Список сохраненных фигур с их типом линий
     public bool pointsFlag = true; //Флаг рисования точки 
     public bool dragFlag = false; //Флаг перемещения точки
     public bool moveFlag = false; //Флаг движения точек
