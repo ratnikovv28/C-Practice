@@ -44,7 +44,11 @@ namespace Practice_5
         }
         public University()
         {
-
+            CityName = "Москва";
+            UniversityName = "Университет";
+            EstablishedYear = 0;
+            NumberOfStudents = 0;
+            TypeOfUniversity = eType.Технический;
         }
     }
 }

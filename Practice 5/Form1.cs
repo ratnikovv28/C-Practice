@@ -60,6 +60,7 @@ namespace Practice_5
             typeOfUniversityColumn.DataSource = Enum.GetValues(typeof(eType));
             typeOfUniversityColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGrid.Columns.Add(typeOfUniversityColumn);
+
         }
 
         private void InitializeData()
@@ -183,7 +184,15 @@ namespace Practice_5
                 else
                 {
                     var ser = new XmlSerializer(typeof(List<University>));
-                    bs.DataSource = (List<University>)ser.Deserialize(stream);
+                    try
+                    {
+                        bs.DataSource = (List<University>)ser.Deserialize(stream);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Файл содержит ошибку");
+                    }
+                    
                 }
             }
         }
@@ -245,6 +254,7 @@ namespace Practice_5
                     row.Visible = true;
             }
         }
+
     }
 
 }
