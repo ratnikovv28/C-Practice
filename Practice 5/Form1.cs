@@ -8,7 +8,9 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
+using System.Xml;
 using System.Xml.Serialization;
+using static System.Net.WebRequestMethods;
 
 namespace Practice_5
 {
@@ -60,7 +62,6 @@ namespace Practice_5
             typeOfUniversityColumn.DataSource = Enum.GetValues(typeof(eType));
             typeOfUniversityColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGrid.Columns.Add(typeOfUniversityColumn);
-
         }
 
         private void InitializeData()
@@ -144,6 +145,8 @@ namespace Practice_5
 
         private void SerializeAndSave(string file, bool isBinaryFormat)
         {
+            var universities = new List<University>();
+
             using (var stream = new FileStream(file, FileMode.Create))
             {
                 if (isBinaryFormat)
@@ -173,16 +176,43 @@ namespace Practice_5
 
         private void DeserializeAndLoad(OpenFileDialog ofd, bool isBinaryFormat)
         {
+            var xDoc = new XmlDocument();
+            xDoc.Load(ofd.FileName);
+            var xRoot = xDoc.DocumentElement;
+            if (xRoot != null)
+            {
+                foreach (XmlElement xNode in xRoot)
+                {
+                    var university = new University();
+
+                    foreach (XmlNode childNode in xNode.ChildNodes)
+                    {
+                        if(childNode.Name == "CityName")
+                        {
+
+                        }
+                    }
+                }
+            }
+
             using (var stream = new FileStream(ofd.FileName, FileMode.Open))
             {
                 if (isBinaryFormat)
                 {
                     var formatter = new BinaryFormatter();
-                    bs.DataSource = (List<University>)formatter.Deserialize(stream);
-                    
+                    try
+                    {
+                        bs.DataSource = (List<University>)formatter.Deserialize(stream);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Файл содержит ошибку");
+                    }
                 }
                 else
                 {
+                    
+
                     var ser = new XmlSerializer(typeof(List<University>));
                     try
                     {
@@ -254,7 +284,5 @@ namespace Practice_5
                     row.Visible = true;
             }
         }
-
     }
-
 }

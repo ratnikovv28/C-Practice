@@ -47,6 +47,7 @@ namespace Practice_5
             CityName = "Москва";
             UniversityName = "Университет";
             EstablishedYear = 0;
+            Logo = "../../Images/default.png";
             NumberOfStudents = 0;
             TypeOfUniversity = eType.Технический;
         }

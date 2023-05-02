@@ -1,0 +1,79 @@
+﻿<Window x:Class="Practice_6.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Practice_6"
+        xmlns:vm="clr-namespace:Practice_6.ViewModels"
+        xmlns:view="clr-namespace:Practice_6.Views" d:DataContext="{d:DesignInstance Type=vm:MainWindowVM}"
+        mc:Ignorable="d"
+        Title="BDBindingApp" 
+        Height="572" 
+        Width="1280"
+        Background="#191919"
+        ResizeMode="CanMinimize">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:DataVM}">
+            <view:DataUserControl/>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="222"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <Grid Grid.Column="0">
+            <Image Source="/Images/logo.png"
+                   Width="80"
+                   Height="80"
+                   Margin="0,-350,0,0"/>
+
+            <Border Width="150"
+                    Height="66"
+                    CornerRadius="10"
+                    Margin="0,0,0,0"
+                    Background="#198146">
+                <TextBlock Text="Загрузить"
+                           Foreground="#ffffff"
+                           FontSize="20"
+                           FontWeight="Regular"
+                           FontFamily="Roboto"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
+                <Border.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding LoadData}"/>
+                </Border.InputBindings>
+            </Border>
+
+            <Border Width="150"
+                    Height="66"
+                    CornerRadius="10"
+                    Margin="0,200,0,0"
+                    Background="#198146">
+                <TextBlock Text="Сохранить"
+                           Foreground="#ffffff"
+                           FontSize="20"
+                           FontWeight="Regular"
+                           FontFamily="Roboto"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
+                <Border.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding SaveData}"/>
+                </Border.InputBindings>
+            </Border>
+
+            <Border Width="5"
+                    Height="536"
+                    Background="#323232"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    CornerRadius="5"/>
+        </Grid>
+        
+        <Grid Grid.Column="1">
+            <!--ContentPresenter отвечает за показ usercontrol'ов-->
+            <ContentPresenter Content="{Binding CurrentViewModel}"/>
+        </Grid>
+    </Grid>
+</Window>
