@@ -26,6 +26,9 @@ namespace Practice_6.ViewModels
             dataVM = AllUC._DataVM;
             LoadData = new RelayCommand(LoadDataFunc);
             SaveData = new RelayCommand(SaveDataFunc);
+            OpenAuthors = new RelayCommand(OpenAuthorsFunc);
+            OpenPublishers = new RelayCommand(OpenPublishersFunc);
+            OpenData = new RelayCommand(OpenDataFunc);
         }
 
         #region Property's
@@ -46,7 +49,9 @@ namespace Practice_6.ViewModels
 
         public RelayCommand SaveData { get; }
 
-       
+        public RelayCommand OpenData { get; }
+        public RelayCommand OpenAuthors { get; }
+        public RelayCommand OpenPublishers { get; }
         #endregion
 
         #region Function's
@@ -95,6 +100,21 @@ namespace Practice_6.ViewModels
                 // Записываем JSON-строку в файл
                 File.WriteAllText(saveFileDialog.FileName, json);
             }
+        }
+
+        public void OpenDataFunc(object obj)
+        {
+            CurrentViewModel = AllUC._DataVM;
+        }
+
+        public void OpenAuthorsFunc(object obj)
+        {
+            CurrentViewModel = AllUC._AuthorVM;
+        }
+
+        public void OpenPublishersFunc(object obj)
+        {
+            CurrentViewModel = AllUC._PublisherVM;
         }
         #endregion
     }

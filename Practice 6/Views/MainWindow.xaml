@@ -16,6 +16,12 @@
         <DataTemplate DataType="{x:Type vm:DataVM}">
             <view:DataUserControl/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AuthorVM}">
+            <view:AuthorUserControl/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:PublisherVM}">
+            <view:PublisherUserControl/>
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -30,9 +36,60 @@
                    Margin="0,-350,0,0"/>
 
             <Border Width="150"
-                    Height="66"
+                    Height="46"
                     CornerRadius="10"
-                    Margin="0,0,0,0"
+                    Margin="0,-120,0,0"
+                    Background="#198146">
+                <TextBlock Text="Книги"
+                           Foreground="#ffffff"
+                           FontSize="20"
+                           FontWeight="Regular"
+                           FontFamily="Roboto"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
+                <Border.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding OpenData}"/>
+                </Border.InputBindings>
+            </Border>
+            
+            <Border Width="150"
+                    Height="46"
+                    CornerRadius="10"
+                    Margin="0,15,0,0"
+                    Background="#198146">
+                <TextBlock Text="Авторы"
+                           Foreground="#ffffff"
+                           FontSize="20"
+                           FontWeight="Regular"
+                           FontFamily="Roboto"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
+                <Border.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding OpenAuthors}"/>
+                </Border.InputBindings>
+            </Border>
+            
+            <Border Width="150"
+                    Height="46"
+                    CornerRadius="10"
+                    Margin="0,150,0,0"
+                    Background="#198146">
+                <TextBlock Text="Издательства"
+                           Foreground="#ffffff"
+                           FontSize="20"
+                           FontWeight="Regular"
+                           FontFamily="Roboto"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
+                <Border.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding OpenPublishers}"/>
+                </Border.InputBindings>
+            </Border>
+            
+            <Border Width="150"
+                    Height="46"
+                    CornerRadius="10"
+                    Margin="0,280,0,0"
                     Background="#198146">
                 <TextBlock Text="Загрузить"
                            Foreground="#ffffff"
@@ -47,9 +104,9 @@
             </Border>
 
             <Border Width="150"
-                    Height="66"
+                    Height="46"
                     CornerRadius="10"
-                    Margin="0,200,0,0"
+                    Margin="0,410,0,0"
                     Background="#198146">
                 <TextBlock Text="Сохранить"
                            Foreground="#ffffff"

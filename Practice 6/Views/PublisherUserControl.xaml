@@ -1,0 +1,175 @@
+﻿<UserControl x:Class="Practice_6.Views.PublisherUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Practice_6.Views"
+             mc:Ignorable="d" 
+             Height="582"
+             Width="1050"
+             Background="#191919">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style x:Key="TextStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="Foreground" Value="#ffffff"/>
+                <Setter Property="FontWeight" Value="Medium"/>
+                <Setter Property="FontFamily" Value="Roboto"/>
+            </Style>
+            <Style x:Key="TaskTextStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="Foreground" Value="#ffffff"/>
+                <Setter Property="FontWeight" Value="Light"/>
+                <Setter Property="FontFamily" Value="Roboto"/>
+                <Setter Property="Padding" Value="3 0 3 0"/>
+                <Setter Property="TextAlignment" Value="Center"/>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="725"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="90"></RowDefinition>
+                <RowDefinition Height="374"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid>
+                <TextBlock Text="ID"
+                      Style="{StaticResource TextStyle}"
+                       Margin="44,58,10,0"/>
+
+                <TextBlock Text="Название издательства"
+                       Style="{StaticResource TextStyle}"
+                       Margin="142,58,28,0"/>
+
+                <Border Height="5"
+                    Width="802"
+                    VerticalAlignment="Bottom"
+                    Background="#323232"
+                    CornerRadius="5"
+                    Margin="-15 0 0 0"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <ListBox Width="670"
+                     Height="350"
+                     VerticalAlignment="Top"
+                     HorizontalAlignment="Center"
+                     Margin="0 10 0 0"
+                     BorderThickness="0"
+                     Background="#191919"
+                     ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                     ItemsSource="{Binding Publishers}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="275" />
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="190"/>
+                                    <ColumnDefinition Width="50"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding PublisherId}"
+                                           Grid.Column="0"
+                                           Style="{StaticResource TaskTextStyle}"/>
+                                <TextBlock Text="{Binding PublisherName}"
+                                           Grid.Column="1"
+                                           Margin="10 0 10 0"
+                                           Style="{StaticResource TaskTextStyle}"/>
+                                <Image Source="/Images/delete.png"
+                                   Grid.Column="4"
+                                   Width="20"
+                                   Height="20">
+                                    <Image.InputBindings>
+                                        <MouseBinding MouseAction="LeftClick" Command="{Binding DeleteBook}"  CommandParameter="{Binding Books}"/>
+                                    </Image.InputBindings>
+                                </Image>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Border Background="#37B34A"
+                    Width="190"
+                    Height="41"
+                    CornerRadius="5"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Margin="0 8 0 0">
+                    <TextBlock Text="Обновить"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           Foreground="#FFFFFF"
+                           FontSize="20"
+                           FontWeight="Regular"
+                           FontFamily="Roboto"/>
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding GetBooks}"/>
+                    </Border.InputBindings>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Border Width="5"
+                    Height="582"
+                    Background="#323232"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left"
+                    CornerRadius="5"/>
+
+            <Border Background="#37B34A"
+                    Width="190"
+                    Height="41"
+                    CornerRadius="5"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Margin="0 400 0 0">
+                <TextBlock Text="Поиск"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           Foreground="#FFFFFF"
+                           FontSize="20"
+                           FontWeight="Regular"
+                           FontFamily="Roboto"/>
+                <Border.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding FindData}"/>
+                </Border.InputBindings>
+            </Border>
+
+            <Border Background="#37B34A"
+                    Width="190"
+                    Height="41"
+                    CornerRadius="5"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Margin="0 475 0 0">
+                <TextBlock Text="Добавить"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           Foreground="#FFFFFF"
+                           FontSize="20"
+                           FontWeight="Regular"
+                           FontFamily="Roboto"/>
+                <Border.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding AddPublisher}"/>
+                </Border.InputBindings>
+            </Border>
+
+            <TextBlock Text="Назвавание" 
+                       Style="{StaticResource TextStyle}"
+                       Margin="58,107,37,448"/>
+            <TextBox Text = "{Binding PublisherNameText, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="28,150,23,401"
+                     Background="#191919"
+                     Foreground="White"
+                     BorderThickness="1"
+                     FontSize="17"/>
+        </Grid>
+    </Grid>
+</UserControl>
