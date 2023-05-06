@@ -80,11 +80,11 @@
                                 <TextBlock Text="{Binding AuthorId}"
                                            Grid.Column="0"
                                            Style="{StaticResource TaskTextStyle}"/>
-                                <TextBlock Text="{Binding FirstName}"
+                                <TextBlock Text="{Binding LastName}"
                                            Grid.Column="1"
                                            Margin="10 0 10 0"
                                            Style="{StaticResource TaskTextStyle}"/>
-                                <TextBlock Text="{Binding LastName}"
+                                <TextBlock Text="{Binding FirstName}"
                                            Grid.Column="2"
                                            Style="{StaticResource TaskTextStyle}"/>
                                 <Image Source="/Images/delete.png"
@@ -92,7 +92,7 @@
                                    Width="20"
                                    Height="20">
                                     <Image.InputBindings>
-                                        <MouseBinding MouseAction="LeftClick" Command="{Binding DeleteBook}"  CommandParameter="{Binding Books}"/>
+                                        <MouseBinding MouseAction="LeftClick" Command="{Binding DeleteAuthor}"  CommandParameter="{Binding Books}"/>
                                     </Image.InputBindings>
                                 </Image>
                             </Grid>
@@ -116,7 +116,7 @@
                            FontWeight="Regular"
                            FontFamily="Roboto"/>
                     <Border.InputBindings>
-                        <MouseBinding MouseAction="LeftClick" Command="{Binding GetBooks}"/>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding GetAuthors}"/>
                     </Border.InputBindings>
                 </Border>
             </Grid>
@@ -145,7 +145,7 @@
                            FontWeight="Regular"
                            FontFamily="Roboto"/>
                 <Border.InputBindings>
-                    <MouseBinding MouseAction="LeftClick" Command="{Binding FindData}"/>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding FindAuthor}"/>
                 </Border.InputBindings>
             </Border>
 
@@ -171,7 +171,7 @@
             <TextBlock Text="Фамилия" 
                        Style="{StaticResource TextStyle}"
                        Margin="58,107,37,448"/>
-            <TextBox Text = "{Binding FirstNameText, UpdateSourceTrigger=PropertyChanged}"
+            <TextBox Text = "{Binding LastNameText, UpdateSourceTrigger=PropertyChanged}"
                      Margin="28,150,23,401"
                      Background="#191919"
                      Foreground="White"
@@ -181,7 +181,7 @@
             <TextBlock Text="Имя" 
                        Style="{StaticResource TextStyle}"
                        Margin="58,203,137,347"/>
-            <TextBox Text = "{Binding LastNameText, UpdateSourceTrigger=PropertyChanged}"
+            <TextBox Text = "{Binding FirstNameText, UpdateSourceTrigger=PropertyChanged}"
                      Margin="26,240,25,311"
                      Background="#191919"
                      Foreground="White"

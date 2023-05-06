@@ -7,7 +7,7 @@ namespace Practice_6.Models
     public class Publisher
     {
         private readonly PublisherRepository publisherRepository;
-        private readonly PublisherVM publisherVM;
+        private PublisherVM publisherVM;
         public int PublisherId { get; }
         public string PublisherName { get; }
 
@@ -16,6 +16,7 @@ namespace Practice_6.Models
             PublisherId = publisherId;
             PublisherName = publisherName;
             DeletePublisher = new RelayCommand(DeletePublisherFunc);
+            publisherRepository = new PublisherRepository();
         }
 
         #region Command's
@@ -26,6 +27,7 @@ namespace Practice_6.Models
         #region Function's
         public void DeletePublisherFunc(object obj)
         {
+            publisherVM = AllUC._PublisherVM;
             publisherVM.Publishers.Remove(this);
             publisherRepository.DeletePublisherFromList(PublisherId);
         }

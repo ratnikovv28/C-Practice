@@ -8,7 +8,7 @@ namespace Practice_6.Models
     public class Book
     {
         private readonly BookRepository bookRepository;
-        private readonly DataVM dataVM;
+        private DataVM dataVM;
         public int BookId { get; }
         public string BookName { get; }
         public string AuthorName { get; }
@@ -22,7 +22,6 @@ namespace Practice_6.Models
             PublisherName = publisherName;
             DeleteBook = new RelayCommand(DeleteBookFunc);
             bookRepository = new BookRepository();
-            dataVM = AllUC._DataVM;
         }
 
         #region Command's
@@ -33,6 +32,7 @@ namespace Practice_6.Models
         #region Function's
         public void DeleteBookFunc(object obj)
         {
+            dataVM = AllUC._DataVM;
             dataVM.Books.Remove(this);
             bookRepository.DeleteBookFromList(BookId);
         }

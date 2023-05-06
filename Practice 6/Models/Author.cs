@@ -8,7 +8,7 @@ namespace Practice_6.Models
     public class Author
     {
         private readonly AuthorRepository authorRepository;
-        private readonly AuthorVM authorVM;
+        private AuthorVM authorVM;
         public int AuthorId { get; }
         public string FirstName { get; }
         public string LastName { get; }
@@ -19,6 +19,7 @@ namespace Practice_6.Models
             FirstName = firstName;
             LastName = lastName;
             DeleteAuthor = new RelayCommand(DeleteAuthorFunc);
+            authorRepository = new AuthorRepository();
         }
 
         #region Command's
@@ -29,6 +30,7 @@ namespace Practice_6.Models
         #region Function's
         public void DeleteAuthorFunc(object obj)
         {
+            authorVM = AllUC._AuthorVM;
             authorVM.Authors.Remove(this);
             authorRepository.DeleteAuthorFromList(AuthorId);
         }

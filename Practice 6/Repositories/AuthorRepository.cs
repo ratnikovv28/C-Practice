@@ -76,5 +76,36 @@ namespace Practice_6.Repositories
                 }
             }
         }
+
+        public ObservableCollection<Author> FindAuthorsList(string firstName, string lastName)
+        {
+            var authors = new ObservableCollection<Author>();
+
+            using (var connection = GetConnection())
+            using (var command = new SqlCommand())
+            {
+                connection.Open();
+                command.Connection = connection;
+                command.CommandText = "SELECT *\r\nFROM Authors;";
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        if (((firstName != null || firstName != "") && firstName == (string)reader.GetValue(1)) |
+                            ((lastName != null || lastName != "") && lastName == (string)reader.GetValue(2)))
+                        {
+                            authors.Add(new Author((int)reader.GetValue(0), (string)reader.GetValue(1), (string)reader.GetValue(2)));
+                        }
+                        else if ((firstName == null || firstName == "") && (lastName == null || lastName == ""))
+                            authors.Add(new Author((int)reader.GetValue(0), (string)reader.GetValue(1), (string)reader.GetValue(2)));
+                    }
+                }
+
+                reader.Close();
+            }
+
+            return authors;
+        }
     }
 }

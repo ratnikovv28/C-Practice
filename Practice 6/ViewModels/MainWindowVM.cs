@@ -68,7 +68,7 @@ namespace Practice_6.ViewModels
 
                     // Десериализуем JSON в список объектов Book
                     List<Book> books = JsonConvert.DeserializeObject<List<Book>>(json);
-
+                    if (books == null) return;
                     //dataVM.Books.Clear();
                     dataVM.bookRepository.DeleteAllFromList();
                     // Добавляем книги в коллекцию в ViewModel

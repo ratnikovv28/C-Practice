@@ -112,7 +112,7 @@ namespace Practice_6.ViewModels
         public void AddBookFunc(object obj)
         {
             if (SelectedPublisher == null || SelectedAuthor == null || BookNameText == null) return;
-            bookRepository.AddBookToList(BookNameText, SelectedAuthor + 1, SelectedPublisher + 1);
+            bookRepository.AddBookToList(BookNameText, SelectedAuthor, SelectedPublisher);
             Books = bookRepository.GetBooksList();
         }
 

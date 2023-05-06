@@ -85,7 +85,7 @@
                                    Width="20"
                                    Height="20">
                                     <Image.InputBindings>
-                                        <MouseBinding MouseAction="LeftClick" Command="{Binding DeleteBook}"  CommandParameter="{Binding Books}"/>
+                                        <MouseBinding MouseAction="LeftClick" Command="{Binding DeletePublisher}"  />
                                     </Image.InputBindings>
                                 </Image>
                             </Grid>
@@ -109,7 +109,7 @@
                            FontWeight="Regular"
                            FontFamily="Roboto"/>
                     <Border.InputBindings>
-                        <MouseBinding MouseAction="LeftClick" Command="{Binding GetBooks}"/>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding GetPublishers}"/>
                     </Border.InputBindings>
                 </Border>
             </Grid>
@@ -138,7 +138,7 @@
                            FontWeight="Regular"
                            FontFamily="Roboto"/>
                 <Border.InputBindings>
-                    <MouseBinding MouseAction="LeftClick" Command="{Binding FindData}"/>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding FindPublisher}"/>
                 </Border.InputBindings>
             </Border>
 

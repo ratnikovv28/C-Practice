@@ -75,5 +75,35 @@ namespace Practice_6.Repositories
                 }
             }
         }
+
+        public ObservableCollection<Publisher> FindPublishersList(string publisherName)
+        {
+            var publishers = new ObservableCollection<Publisher>();
+
+            using (var connection = GetConnection())
+            using (var command = new SqlCommand())
+            {
+                connection.Open();
+                command.Connection = connection;
+                command.CommandText = "SELECT *\r\nFROM Publishers;";
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        if (((publisherName != null || publisherName != "") && publisherName == (string)reader.GetValue(1)))
+                        {
+                            publishers.Add(new Publisher((int)reader.GetValue(0), (string)reader.GetValue(1)));
+                        }
+                        else if ((publisherName == null || publisherName == ""))
+                            publishers.Add(new Publisher((int)reader.GetValue(0), (string)reader.GetValue(1)));
+                    }
+                }
+
+                reader.Close();
+            }
+
+            return publishers;
+        }
     }
 }
