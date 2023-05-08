@@ -1,0 +1,30 @@
+﻿@model Author;
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="~/css/StyleSheet.css">
+</html>
+<div class="instr-block">
+    <div>
+        <a asp-action="Index">Вернуться на главную</a>
+    </div>
+    <h2>Автор</h2>
+    @Html.HiddenFor(a => a.Id)
+    <div style="font-weight:600">Псевдоним автора: </div>
+    <div>@Model.Pseudonym</div>
+    <br />
+    <div style="font-weight:600">Страна: </div>
+    <div>@Model.Country</div>
+    <br />
+    <div>
+        <div style="font-weight:600">Песни:</div>
+        @foreach (var item in ViewData["Songs"] as IQueryable<Song>)
+        {
+            @(item.Name + " " + @item.Year) <br />
+        }
+    </div>
+    <br />
+    @Html.ActionLink("Редактировать", "EditAuthor", Model)
+</div>

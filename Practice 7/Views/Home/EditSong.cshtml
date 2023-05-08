@@ -1,0 +1,41 @@
+﻿@model Song;
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+</html>
+<link rel="stylesheet" href="~/css/StyleSheet.css">
+<div class="edit-block">
+    <div>
+        <a asp-action="Index">Вернуться на главную</a>
+    </div>
+    <h2>Песня</h2>
+    @using (Html.BeginForm("EditSong", "Home"))
+    {
+            @Html.HiddenFor(s => s.Id)
+            <div class="dataBox">
+                    <label>Название песни</label><br />
+            @Html.TextBoxFor(s => s.Name, new { @class = "text-box" })
+            @Html.ValidationMessageFor(s => s.Name)
+                </div>
+                <div class="dataBox">
+                    <label>Год выпуска</label><br />
+            @Html.TextBoxFor(s => s.Year, new { type = "number", @class = "text-box" })
+            @Html.ValidationMessageFor(s => s.Year)
+                </div>
+                <div class="dataBox">
+                    <label>Жанр</label><br />
+            @Html.TextBoxFor(s => s.Genre, new { @class = "text-box" })
+            @Html.ValidationMessageFor(s => s.Genre)
+                </div>        
+                <div class="dataBox">
+                    <label>Автор</label><br />
+            @Html.DropDownListFor(s => s.AuthorId, ViewBag.Authorss as SelectList)
+                </div>
+                <br />
+                <div class="dataBox">
+                    <input type="submit" value="Сохранить" />
+                </div>
+    }
+</div>

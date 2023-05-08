@@ -1,0 +1,32 @@
+﻿@model Author;
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+</html>
+<link rel="stylesheet" href="~/css/StyleSheet.css">
+<div class="edit-block">
+    <div>
+        <a asp-action="Index">Вернуться на главную</a>
+    </div>
+    <h2>Песня</h2>
+    @using (Html.BeginForm("CreateAuthor", "Home"))
+    {
+        @Html.HiddenFor(a => a.Id)
+                <div class="dataBox">
+                    <label>Псевдоним</label><br />
+            @Html.TextBoxFor(a => a.Pseudonym, new { @class = "text-box" })
+            @Html.ValidationMessageFor(a => a.Pseudonym)
+                </div>
+                <div class="dataBox">
+                    <label>Страна</label><br />
+            @Html.TextBoxFor(a => a.Country, new { @class = "text-box" })
+            @Html.ValidationMessageFor(a => a.Country)
+                </div>        
+                <br />
+                <div class="dataBox">
+                    <input type="submit" value="Сохранить"/>
+                </div>
+    }
+</div>

@@ -1,0 +1,68 @@
+﻿@model ViewModel;
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="~/css/StyleSheet.css">
+</html>
+
+<div class="song-list">
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Название</th>
+            <th>Жанр</th>
+            <th>Год</th>
+            <th>Автор</th>
+        </tr>
+        @foreach (var item in Model.Songs)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Genre</td>
+                <td>@item.Year</td>
+                <td>@Html.ActionLink(item.Author.Pseudonym, "ShowAuthor", new { item.Author.Id })</td>
+                <td>
+                    @Html.ActionLink("Редактировать", "EditSong", item)
+                </td>
+                <td>
+                    @Html.ActionLink("Удалить", "DeleteSong", item)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<div class="col-xl-6 align-text-center addLinkBut">
+    @Html.ActionLink("Добавить новую песню", "CreateSong")
+</div>
+
+<div class="author-list">
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Псевдоним</th>
+            <th>Страна</th>
+        </tr>
+        @foreach (var item in Model.Authors)
+        {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Pseudonym</td>
+                    <td>@item.Country</td>
+                    <td>
+                    @Html.ActionLink("Редактировать", "EditAuthor", item)
+                    </td>
+                    <td>
+                    @Html.ActionLink("Удалить", "DeleteAuthor", item)
+                    </td>
+                </tr>
+        }
+    </table>
+</div>
+<div class="col-xl-6 align-text-center addLinkBut">
+    @Html.ActionLink("Добавить нового автора", "CreateAuthor")
+</div>
+ 
+
